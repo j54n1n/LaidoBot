@@ -20,6 +20,12 @@ class MyRobot(wpilib.IterativeRobot):
         #self.timer.start();
         self.launcherBarrel.set(0);
         self.launcherBelt.set(0);
+        """
+        You should be able to connect to the camera using SmartDashboard,
+        the default LabVIEW Dashboard, or if you point your browser at
+        http://roborio-XXXX-frc.local:1181.
+        """
+        wpilib.CameraServer.launch("vision.py:main")
 
     def teleopInit(self):
         axisCount = self.stick.getAxisCount()
