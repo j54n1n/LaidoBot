@@ -5,8 +5,8 @@ from LaidoMap import Motors
 from Lezzo import Joy
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
-        self.tankDrive = wpilib.RobotDrive(self.driveFrontLeft, self.driveRearLeft,
-                                           self.driveFrontRight, self.driveRearRight)
+        self.tankDrive = wpilib.RobotDrive(Motors.driveFrontLeft, Motors.driveRearLeft,
+                                           Motors.driveFrontRight, Motors.driveRearRight)
         self.joy = Joy()
         self.stick = self.joy.my_stick
         # self.timer = wpilib.Timer()
