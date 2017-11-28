@@ -10,10 +10,11 @@ from LaidoMap import Motors
 
 class Joy:
     def __init__(self):
+        Joy = wpilib.Joystick
         self.my_stick = wpilib.Joystick(0)
-        self.button5 = Joystick.getRawButton(5)
-        self.button6 = Joystick.getRawButton(6)
-        self.button7 = Joystick.getRawButton(7)
+        self.button5 = Joy.getRawButton(self.my_stick, 5)
+        self.button6 = Joy.getRawButton(self.my_stick, 6)
+        self.button7 = Joy.getRawButton(self.my_stick, 7)
         #self.quit_button = Joystick.getRawButton(?)  FIXME
         self.launcher_velocity = self.my_stick.getZ()
 
@@ -51,9 +52,5 @@ class Joy:
             motor.set(speed_irl - 0.01)
 
     def is_pressed(self):
-        self.button5 = Joystick.getRawButton(5)
-        self.button6 = Joystick.getRawButton(6)
-        self.button7 = Joystick.getRawButton(7)
-
         if self.button5 or self.button6 or self.button7:
             return True
