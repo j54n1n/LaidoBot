@@ -1,73 +1,63 @@
 #!/usr/bin/env python3
 
 import wpilib
-
+from LaidoMap import Motors
+from Lezzo import Joy
 class MyRobot(wpilib.IterativeRobot):
-
     def robotInit(self):
-        self.driveFrontLeft  = wpilib.Victor(0)
-        self.driveFrontRight = wpilib.Victor(1)
-        self.driveRearLeft   = wpilib.Victor(2)
-        self.driveRearRight  = wpilib.Victor(3)
-        self.launcherBelt = wpilib.Victor(4)
-        self.launcherBarrel = wpilib.Victor(5)
-        self.tankDrive = wpilib.RobotDrive(
-            self.driveFrontLeft, self.driveRearLeft,
-            self.driveFrontRight, self.driveRearRight
-        )
-        self.stick = wpilib.Joystick(0);
-        #self.timer = wpilib.Timer();
-        #self.timer.start();
-        self.launcherBarrel.set(0);
-        self.launcherBelt.set(0);
+        self.tankDrive = wpilib.RobotDrive(self.driveFrontLeft, self.driveRearLeft,
+                                           self.driveFrontRight, self.driveRearRight)
+        self.joy = Joy()
+        self.stick = self.joy.my_stick
+        # self.timer = wpilib.Timer()
+        # self.timer.start()
+        Motors.launcherBarrel.set(0)
+        Motors.launcherBelt.set(0)
 
     def teleopInit(self):
-        axisCount = self.stick.getAxisCount()
-        buttonCount = self.stick.getButtonCount()
+        axis_count = self.stick.getAxisCount()
+        button_count = self.stick.getButtonCount()
+        self.status = 5
 
-        #print("AxisCount = " + str(axisCount))
-        for axis in range(0, axisCount):
+        # print("AxisCount = " + str(axis_count))
+        for axis in range(0, axis_count):
             try:
-                axisChannel = self.stick.getAxisChannel(axis)
-                #print(str(axis) + ": axisChannel = " + str(axisChannel))
+                axis_channel = self.stick.getAxisChannel(axis)
+                # print(str(axis) + ": axis_channel = " + str(axis_channel))
             except IndexError:
                 pass
-        #print("ButtonCount = " + str(buttonCount))
-        for button in range(1, buttonCount + 1):
+        # print("ButtonCount = " + str(button_count))
+        for button in range(1, button_count + 1):
             try:
-                rawButton = self.stick.getRawButton(button)
-                #print(str(button) + ": rawButton = " + str(rawButton))
+                raw_button = self.stick.getRawButton(button)
+                # print(str(button) + ": raw_button = " + str(raw_button))
             except IndexError:
                 pass
 
     def teleopPeriodic(self):
         self.tankDrive.arcadeDrive(self.stick)
-        launcherVelocity = self.stick.getZ()
-        self.launcherBelt.set(launcherVelocity)
-        if launcherVelocity < 0:
-            self.launcherBarrel.set(launcherVelocity)
-        else:
-            self.launcherBarrel.set(0)
-        #if self.timer.hasPeriodPassed(0.2):
-        #    pass
+        self.joy.switch(self.status)
+
+
 
     def autonomousInit(self):
-        self.driveFrontLeft.set(0)
-        self.driveFrontRight.set(0)
-        self.driveRearLeft.set(0)
-        self.driveRearRight.set(0)
+        Motors.driveFrontLeft.set(0)
+        Motors.driveFrontRight.set(0)
+        Motors.driveRearLeft.set(0)
+        Motors.driveRearRight.set(0)
 
     def autonomousPeriodic(self):
         pass
 
     def robotPeriodic(self):
         pass
-    
+
     def disabledPeriodic(self):
         pass
 
     def disabledInit(self):
         pass
+
 
 if __name__ == "__main__":
     wpilib.run(MyRobot)
