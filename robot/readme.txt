@@ -1,2 +1,0 @@
-Laido=robot
-Lezzo=remote
