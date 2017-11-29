@@ -3,16 +3,18 @@
 import wpilib
 from LaidoMap import Motors
 from Lezzo import Joy
+
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
-        self.tankDrive = wpilib.RobotDrive(Motors.driveFrontLeft, Motors.driveRearLeft,
-                                           Motors.driveFrontRight, Motors.driveRearRight)
-        self.joy = Joy()
+        self.motors = Motors()
+        self.tankDrive = wpilib.RobotDrive(self.motors.driveFrontLeft, self.motors.driveRearLeft,
+                                           self.motors.driveFrontRight, self.motors.driveRearRight)
+        self.joy = Joy(self.motors)
         self.stick = self.joy.my_stick
         # self.timer = wpilib.Timer()
         # self.timer.start()
-        Motors.launcherBarrel.set(0)
-        Motors.launcherBelt.set(0)
+        self.motors.launcherBarrel.set(0)
+        self.motors.launcherBelt.set(0)
 
     def teleopInit(self):
         axis_count = self.stick.getAxisCount()
@@ -36,15 +38,15 @@ class MyRobot(wpilib.IterativeRobot):
 
     def teleopPeriodic(self):
         self.tankDrive.arcadeDrive(self.stick)
-        self.joy.switch(self.status)
+        self.status = self.joy.switch(self.status)
 
 
 
     def autonomousInit(self):
-        Motors.driveFrontLeft.set(0)
-        Motors.driveFrontRight.set(0)
-        Motors.driveRearLeft.set(0)
-        Motors.driveRearRight.set(0)
+        self.motors.driveFrontLeft.set(0)
+        self.motors.driveFrontRight.set(0)
+        self.motors.driveRearLeft.set(0)
+        self.motors.driveRearRight.set(0)
 
     def autonomousPeriodic(self):
         pass
